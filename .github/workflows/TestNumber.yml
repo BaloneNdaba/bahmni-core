@@ -47,13 +47,7 @@ jobs:
     - name: One
       run: ls -l
       
-    - name: List output files
-      run: ls
-
-    - name: List dist files
-      run: cd dist && ls
-      
-    - name: Where am I
+    - name: Check Space
       run: pwd
      
     - name: Push production code to release repo
