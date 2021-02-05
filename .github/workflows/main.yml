@@ -74,13 +74,4 @@ jobs:
     
     - name: Create Tarball of the build (production code)
       run: tar -zcvf dist_2301_28012021.tar.gz /home/runner/work/openmrs-module-bahmniapps/openmrs-module-bahmniapps/ui/dist/
-    
-    - name: Ship the build to remote host
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        port: ${{ secrets.PORT }}
-        password: ${{ secrets.PASSWORD }}
-        source: "/home/runner/work/openmrs-module-bahmniapps/openmrs-module-bahmniapps/ui/dist_2301_28012021.tar.gz"
-        target: "test"
+  
