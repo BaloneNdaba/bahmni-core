@@ -62,11 +62,11 @@ jobs:
         git init
         git branch -m bahmniapps_build
         git add .
-        git config --global user.email "la.mphatsi@gmail.com"
-        git config --global user.name "lmphatsi"
+        git config --global user.email "balonendaba@gmail.com"
+        git config --global user.name "BaloneNdaba"
         git commit -m "release changes to production code (dist)"
         git status
-        git remote add github https://${{ secrets.GH_TOKEN }}@github.com/lmphatsi/openmrs-module-bahmniapps.git
+        git remote add github https://${{ secrets.GH_TOKEN }}@github.com/BalonenNdaba/openmrs-module-bahmnicore.git
         git push -f github bahmniapps_build
     
     - name: Create Tarball of the build (production code)
