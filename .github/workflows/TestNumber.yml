@@ -1,13 +1,11 @@
-name: Autobuild CI
+name: Java CI with Maven
 
 on:
   push:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-defaults:
-  run:
-    working-directory: ui
+
 jobs:
   build:
 
@@ -15,65 +13,32 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    - name: Use Node.js 10.x
-      uses: actions/setup-node@v1
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
       with:
-        node-version: 10.x
-        
-    - name: Use ruby 2.7
+        java-version: 1.8
+      
+    - name: Use ruby 2.4
       uses: actions/setup-ruby@v1
       with:
-        ruby-version: '2.7'
-   
-    - name: Get module Bower
-      run: npm install -g bower
-      
-    - name: Get module Grunt
-      run: npm install -g grunt
-      
-    - name: Get module required for sass (scss)
+        ruby-version: '2.4'
+        
+    - name: Get Ruby version
+      run: ruby --version
+    
+    - name: Check Java version
+      run: java -version
+    
+    - name: Get compass
       run: gem install compass
-      
-    - name: Get node dependencies
-      run: npm install
-      
-    - name: Set up UI component/dependencies
-      run: bower install
-      
-    - name: Build the application (into dist folder) using Grunt
-      run: grunt --force
-      
-    - name: One
-      run: ls -l
-      
-    - name: Check Space
-      run: pwd
-     
-    - name: Push production code to release repo
+    
+    - name: where am I
       run: |
-        cd /home/runner/work/openmrs-module-bahmniapps/openmrs-module-bahmniapps/ui/dist/
-        git init
-        git branch -m bahmniapps_build
-        git add .
-        git config --global user.email "balonendaba@gmail.com"
-        git config --global user.name "BaloneNdaba"
-        git commit -m "release changes to production code (dist)"
-        git status
-        git remote add github https://${{ secrets.GH_TOKEN }}@github.com/BalonenNdaba/openmrs-module-bahmnicore.git
-        git push -f github bahmniapps_build
+        pwd
+        ls
     
-    - name: Create Tarball of the build (production code)
-      run: tar -zcvf dist_2301_28012021.tar.gz /home/runner/work/openmrs-module-bahmniapps/openmrs-module-bahmniapps/ui/dist/
-    
-    - name: Ship the build to remote host
-      uses: appleboy/scp-action@master
-      with:
-        host: ${{ secrets.HOST }}
-        username: ${{ secrets.USERNAME }}
-        port: ${{ secrets.PORT }}
-        password: ${{ secrets.PASSWORD }}
-        source: "/home/runner/work/openmrs-module-bahmniapps/openmrs-module-bahmniapps/ui/dist_2301_28012021.tar.gz"
-        target: "test"
-    - name: test
-      run: ls 
+    - name: Build with Maven
+      run: mvn clean install -DskipTests=true
+      
+    - name: Check output
+      run: ls bahmnicore-omod/target
