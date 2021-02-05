@@ -47,6 +47,9 @@ jobs:
     - name: Build the application (into dist folder) using Grunt
       run: grunt --force
       
+    - name: One
+      run: ls -l
+      
     - name: List output files
       run: ls
 
